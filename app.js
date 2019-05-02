@@ -1,11 +1,20 @@
 const http = require('http')
+const qs = require('querystring')
 const BlogRouterHandler = require('./src/router/blog')
 const UserRouterHandler = require('./src/router/user')
 
+/**
+ * 
+ * @param {*请求对象} req 
+ * @param {*响应对象} res
+ * 主要用于开启一个服务,做一些相关配置 
+ */
 const createServerHandler = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
+
+    // 解析query
+    req.query = qs.parse(req.url.split('?')[1])
     
-    // 获取接口数据
     const blogData = BlogRouterHandler(req, res)
     if (blogData) {
         res.end(JSON.stringify(blogData))
