@@ -2,6 +2,12 @@
  * 主要根据传递的参数处理数据相关
  */
 
+ /**
+  * 
+  * @param {string} author 
+  * @param {string} keyword
+  * @return Object 
+  */
 const getList = (author, keyword) => {
     return [
         { 
@@ -21,6 +27,11 @@ const getList = (author, keyword) => {
     ]
 }
 
+/**
+ * 
+ * @param {number} id
+ * @return Object 
+ */
 const getDetails = id => {
     return [
         {
@@ -33,7 +44,41 @@ const getDetails = id => {
     ]
 }
 
+/**
+ * 
+ * @param {object} blogData
+ * @return Object 
+ */
+const setNewBlog = blogData => {
+    return {
+        id: 4
+    }
+}
+
+/**
+ * 
+ * @param {number} id 
+ * @param {object} blogData
+ * @return Boolean 
+ */
+const updateBlog = (id, blogData) => {
+    return true
+}
+
+/**
+ * 
+ * @param {number} id
+ * @return Boolean 
+ */
+const deleteBlog = id => {
+    console.log(id, '删除博客的id')
+    return true
+}
+
 module.exports = {
     getList,
-    getDetails
+    getDetails,
+    setNewBlog,
+    updateBlog,
+    deleteBlog
 }
