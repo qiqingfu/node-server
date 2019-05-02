@@ -19,7 +19,7 @@ const createServerHandler = async (req, res) => {
     const postData = await getPostData(req)
     req.body = postData
     
-    const blogData = BlogRouterHandler(req, res)
+    const blogData =  await BlogRouterHandler(req, res)
     if (blogData) {
         res.end(JSON.stringify(blogData))
         return

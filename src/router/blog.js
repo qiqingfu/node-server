@@ -12,7 +12,7 @@ const { SuccessModel, ErrorModel } = require('../model/resModel')
 * 处理路由相关的工作
 * 不关心数据是怎么组合的
 */
-const BlogRouterHandler = (req, res) => {
+const BlogRouterHandler = async (req, res) => {
     const { method, url } = req
     const path = url.split('?')[0]
     const id = req.query.id
@@ -21,7 +21,7 @@ const BlogRouterHandler = (req, res) => {
     if (method === 'GET' && path === `${API}/list`) {
         const { author = '', keyword = '' } = req.query
 
-        const blogData = getList(author, keyword)
+        const blogData = await getList(author, keyword)
         return new SuccessModel(blogData)
     }
 

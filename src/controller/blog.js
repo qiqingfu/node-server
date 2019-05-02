@@ -8,24 +8,21 @@
   * @param {string} keyword
   * @return Object 
   */
+const {exec} = require('../db/mysql')
 
-const getList = (author, keyword) => {
-    return [
-        { 
-            id: 1, 
-            author: 'zhangsan', 
-            title: 'title-1', 
-            content: '内容1', 
-            createTime: 1556775706158
-        },
-        { 
-            id: 2, 
-            author: 'lisi', 
-            title: 'title-2', 
-            content: '内容2', 
-            createTime: 1556775730658
-        }
-    ]
+const getList = async (author, keyword) => {
+    console.log(keyword)
+    let sql = `select * from blogs where 1=1`
+    if (author) {
+        sql += ` and author='${author}'`
+    }
+    // 模糊查询关键字title、content
+    if (keyword) {
+        sql += ` and title like '%${keyword}%' or content like '%${keyword}%'`
+    }
+    sql += ` order by createtime desc`
+    const resultData = await exec(sql)
+    return resultData
 }
 
 /**
