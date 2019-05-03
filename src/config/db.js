@@ -4,6 +4,7 @@
 const env = process.env.NODE_ENV
 
 let MYSQL_CONFIG
+let REDIS_CONFIG
 
 if (env === 'dev') {
     MYSQL_CONFIG = {
@@ -14,6 +15,12 @@ if (env === 'dev') {
         password: '123456',
         database: 'myblog',
         connectTimeout: 6000,
+    }
+
+    // redis配置
+    REDIS_CONFIG = {
+        host: '127.0.0.1',
+        port: 6379
     }
 }
 
@@ -28,8 +35,14 @@ if (env === 'prod') {
         database: 'myblog',
         connectTimeout: 6000,
     }
+
+    REDIS_CONFIG = {
+        host: '127.0.0.1',
+        port: 6379
+    }
 }
 
 module.exports = {
-    MYSQL_CONFIG
+    MYSQL_CONFIG,
+    REDIS_CONFIG
 }

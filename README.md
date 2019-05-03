@@ -21,21 +21,7 @@
   - 安全且不受大小限制
   - 根据客户端发来的身份证号,来找到这个用户的信息 
 
-#### 解析 session
-```javascript
-const SESSION_DATA = {}
-let token = req.cookie.token || ''
-if (token) {
-    if (!SESSION_DATA[token]) {
-        SESSION_DATA[token] = {}
-    }
-} else {
-    isSetCookie = true
-    token = GenNonDuplicateID(20)
-    SESSION_DATA[token] = {}
-}
-req.session = SESSION_DATA[token]
-```  
+
 具体代码在 `src/app.js`
 
 ### ...
