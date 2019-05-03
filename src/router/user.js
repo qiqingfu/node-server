@@ -1,6 +1,7 @@
 const API = '/api/user'
 const { loginIn } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
+const MaxAge = 1 * 24 * 60 * 60 * 1000
 
 const UserRouterHandler = async (req, res) => {
     const { method, path } = req
@@ -17,7 +18,7 @@ const UserRouterHandler = async (req, res) => {
         const userData = await loginIn({username, password})
         if (userData.code) {
             const {data=null, message} = userData
-            res.setHeader('Set-Cookie', `username=${data.username}`)
+            res.setHeader('Set-Cookie', `username=${data.username};path=/;httpOnly;maxAge=${MaxAge}`)
             return new SuccessModel(data, message)
         } else {
             return new ErrorModel(userData.message)

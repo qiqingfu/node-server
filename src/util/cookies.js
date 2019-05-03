@@ -7,8 +7,8 @@ const resolveCookie = req => {
                 return
             }
             const cookieArr = item.split('=')
-            const key = cookieArr[0] 
-            const value = cookieArr[1]
+            const key = cookieArr[0].trim()
+            const value = cookieArr[1].trim()
             resultCookie[key] = value
         })
     }
