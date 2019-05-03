@@ -13,9 +13,7 @@ const { SuccessModel, ErrorModel } = require('../model/resModel')
 * 不关心数据是怎么组合的
 */
 const BlogRouterHandler = async (req, res) => {
-    const { method, url } = req
-    const path = url.split('?')[0]
-    const id = req.query.id
+    const { method, path, query:{id} } = req
 
     // 博客列表接口
     if (method === 'GET' && path === `${API}/list`) {

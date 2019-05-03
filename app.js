@@ -3,6 +3,7 @@ const qs = require('querystring')
 const BlogRouterHandler = require('./src/router/blog')
 const UserRouterHandler = require('./src/router/user')
 const getPostData = require('./src/util/getPostData')
+const resolveCookie = require('./src/util/cookies')
 /**
  * 
  * @param {*请求对象} req 
@@ -14,6 +15,10 @@ const createServerHandler = async (req, res) => {
 
     // 解析query
     req.query = qs.parse(req.url.split('?')[1])
+    req.path = req.url.split('?')[0]
+
+    // 解析cookie
+    req.cookie = resolveCookie(req)
 
     // 解析 post data的数据
     const postData = await getPostData(req)
