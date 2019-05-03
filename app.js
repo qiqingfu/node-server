@@ -25,7 +25,7 @@ const createServerHandler = async (req, res) => {
         return
     }
 
-    const userData = UserRouterHandler(req, res)
+    const userData = await UserRouterHandler(req, res)
     if (userData) {
         res.end(JSON.stringify(userData))
         return
