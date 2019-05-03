@@ -16,9 +16,9 @@ const getList = async (author, keyword) => {
     if (author) {
         sql += ` and author='${author}'`
     }
-    // 模糊查询关键字title、content
+    // 模糊查询关键字title
     if (keyword) {
-        sql += ` and title like '%${keyword}%' or content like '%${keyword}%'`
+        sql += ` and title like '%${keyword}%'`
     }
     sql += ` order by createtime desc`
     const resultData = await exec(sql)
@@ -31,25 +31,22 @@ const getList = async (author, keyword) => {
  * @return Object 
  */
 const getDetails = id => {
-    return [
-        {
-            id: 1, 
-            author: 'zhangsan', 
-            title: 'title-1', 
-            content: '内容1', 
-            createTime: 1556775706158
-        }
-    ]
+    const sql = `select * from blogs where id=${id}`
+    return exec(sql)
 }
 
 /**
  * 
  * @param {object} blogData
+ * @param {string} author
  * @return Object 
  */
-const setNewBlog = blogData => {
+const setNewBlog = async (blogData) => {
+    const {title, content, createtime, author} = blogData
+    const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', ${createtime}, '${author}')`
+    const insertData = await exec(sql)
     return {
-        id: 4
+        id: insertData.insertId
     }
 }
 
@@ -68,9 +65,10 @@ const updateBlog = (id, blogData) => {
  * @param {number} id
  * @return Boolean 
  */
-const deleteBlog = id => {
-    console.log(id, '删除博客的id')
-    return true
+const deleteBlog = async (id, author) => {
+    const sql = `delete from blogs where id=${id} and author='${author}'`
+    const deleteResult = await exec(sql)
+    return deleteResult
 }
 
 module.exports = {

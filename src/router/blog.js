@@ -27,13 +27,14 @@ const BlogRouterHandler = async (req, res) => {
 
     // 获取博客内容
     if (method === 'GET' && path === `${API}/details`) {
-        const blogDetailsData = getDetails(id)
+        const blogDetailsData = await getDetails(id)
         return new SuccessModel(blogDetailsData)
     }
 
     // 新增一篇博客
     if (method === 'POST' && path === `${API}/new`) {
-        const data = setNewBlog(req.body)
+        let author = 'zhangsan'  // 假数据,应该根据登陆用户的token
+        const data = await setNewBlog(req.body, author)
         return new SuccessModel(data, '新增成功!')
     }
 
@@ -47,13 +48,17 @@ const BlogRouterHandler = async (req, res) => {
         }
     }
 
-    // 更删除一篇博客
+    // 删除一篇博客
     if (method === 'POST' && path === `${API}/delete`) {
-        const deleteResult = deleteBlog(id)
+        const author = 'zhangsan'
+        const deleteResult = await deleteBlog(id, author)
         if (deleteResult) {
-            return new SuccessModel('删除成功')
-        } else {
-            return new ErrorModel('删除失败')
+            // 根据受影响的行数,判断是否删除成功
+            if (deleteResult.affectedRows > 0) {
+                return new SuccessModel('删除成功')   
+            } else {
+                return new ErrorModel('删除失败')
+            }
         }
     }
 }
