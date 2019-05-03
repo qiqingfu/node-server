@@ -40,11 +40,14 @@ const BlogRouterHandler = async (req, res) => {
 
     // 更新一篇博客
     if (method === 'POST' && path === `${API}/update`) {
-        const updateResult = updateBlog(id, req.body)
+        const author = 'zhangsan'
+        const updateResult = await updateBlog(id, req.body, author)
         if (updateResult) {
-            return new SuccessModel('更新成功')
-        } else {
-            return new ErrorModel('更新失败')
+            if (updateResult.changedRows > 0) {
+                return new SuccessModel('更新成功')
+            } else {
+                return new ErrorModel('更新失败')
+            }
         }
     }
 
@@ -55,7 +58,7 @@ const BlogRouterHandler = async (req, res) => {
         if (deleteResult) {
             // 根据受影响的行数,判断是否删除成功
             if (deleteResult.affectedRows > 0) {
-                return new SuccessModel('删除成功')   
+                return new SuccessModel('删除成功')
             } else {
                 return new ErrorModel('删除失败')
             }

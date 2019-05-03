@@ -56,8 +56,11 @@ const setNewBlog = async (blogData) => {
  * @param {object} blogData
  * @return Boolean 
  */
-const updateBlog = (id, blogData) => {
-    return true
+const updateBlog = async (id, blogData,author) => {
+    const {title,content} = blogData
+    const sql = `update blogs set title='${title}', content='${content}' where id=${id} and author='${author}'`
+    const updateResult = await exec(sql)
+    return updateResult
 }
 
 /**
