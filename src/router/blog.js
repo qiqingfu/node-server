@@ -7,6 +7,7 @@ const {
     deleteBlog
 } = require('../controller/blog')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
+const { isLogin } = require('../util/login')
 
 /**
 * 处理路由相关的工作
@@ -31,14 +32,20 @@ const BlogRouterHandler = async (req, res) => {
 
     // 新增一篇博客
     if (method === 'POST' && path === `${API}/new`) {
-        let author = 'zhangsan'  // 假数据,应该根据登陆用户的token
+        const userIsLogin = isLogin(req)
+        if (userIsLogin) return userIsLogin
+
+        let author = req.session.username  // 假数据,应该根据登陆用户的token
         const data = await setNewBlog(req.body, author)
         return new SuccessModel(data, '新增成功!')
     }
 
     // 更新一篇博客
     if (method === 'POST' && path === `${API}/update`) {
-        const author = 'zhangsan'
+        const userIsLogin = isLogin(req)
+        if (userIsLogin) return userIsLogin
+
+        const author = req.session.username
         const updateResult = await updateBlog(id, req.body, author)
         if (updateResult) {
             if (updateResult.changedRows > 0) {
@@ -51,7 +58,10 @@ const BlogRouterHandler = async (req, res) => {
 
     // 删除一篇博客
     if (method === 'POST' && path === `${API}/delete`) {
-        const author = 'zhangsan'
+        const userIsLogin = isLogin(req)
+        if (userIsLogin) return userIsLogin
+
+        const author = req.session.username
         const deleteResult = await deleteBlog(id, author)
         if (deleteResult) {
             // 根据受影响的行数,判断是否删除成功

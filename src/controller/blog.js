@@ -41,8 +41,8 @@ const getDetails = id => {
  * @param {string} author
  * @return Object 
  */
-const setNewBlog = async (blogData) => {
-    const {title, content, createtime, author} = blogData
+const setNewBlog = async (blogData, author) => {
+    const {title, content, createtime} = blogData
     const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', ${createtime}, '${author}')`
     const insertData = await exec(sql)
     return {

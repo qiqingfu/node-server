@@ -29,13 +29,13 @@ const UserRouterHandler = async (req, res) => {
     }
 
     // 用户是否登陆测试
-    // if (method === 'GET' && path === `${API}/login-test`) {
-    //     if (req.session.username) {
-    //         return Promise.resolve(new SuccessModel('你已登陆'))
-    //     } else {
-    //         return Promise.resolve(new ErrorModel('你未登陆'))
-    //     }
-    // }
+    if (method === 'GET' && path === `${API}/login-test`) {
+        if (req.session.username) {
+            return Promise.resolve(new SuccessModel('你已登陆'))
+        } else {
+            return Promise.resolve(new ErrorModel('你未登陆'))
+        }
+    }
 }
 
 module.exports = UserRouterHandler
