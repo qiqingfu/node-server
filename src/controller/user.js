@@ -1,8 +1,10 @@
 // 主要处理用户登陆相关的数据
-const {exec} = require('../db/mysql')
+const {exec, escape} = require('../db/mysql')
 
 const loginIn = async data => {
-    const {username, password} = data
+    let {username, password} = data
+    username = escape(username)
+    password = escape(password)
     if (!username) {
         return {
             code: 0,
@@ -15,7 +17,7 @@ const loginIn = async data => {
             message: '密码不能为空'
         }
     }
-    const sql = `select username,realname from users where username='${username}' and password='${password}'`
+    const sql = `select username,realname from users where username=${username} and password=${password}`
     const userInfoResult = await exec(sql)
     if (userInfoResult[0]) {
         return {

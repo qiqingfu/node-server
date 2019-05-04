@@ -9,9 +9,9 @@
   * @return Object 
   */
 const {exec} = require('../db/mysql')
+const xss = require('xss')
 
 const getList = async (author, keyword) => {
-    console.log(keyword)
     let sql = `select * from blogs where 1=1`
     if (author) {
         sql += ` and author='${author}'`
@@ -42,7 +42,9 @@ const getDetails = id => {
  * @return Object 
  */
 const setNewBlog = async (blogData, author) => {
-    const {title, content, createtime} = blogData
+    let {title, content, createtime} = blogData
+    title = xss(title)
+    content = xss(content)
     const sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', ${createtime}, '${author}')`
     const insertData = await exec(sql)
     return {
@@ -57,7 +59,9 @@ const setNewBlog = async (blogData, author) => {
  * @return Boolean 
  */
 const updateBlog = async (id, blogData,author) => {
-    const {title,content} = blogData
+    let {title,content} = blogData
+    title = xss(title)
+    content = xss(content)
     const sql = `update blogs set title='${title}', content='${content}' where id=${id} and author='${author}'`
     const updateResult = await exec(sql)
     return updateResult
