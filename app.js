@@ -4,9 +4,12 @@ const BlogRouterHandler = require('./src/router/blog')
 const UserRouterHandler = require('./src/router/user')
 const getPostData = require('./src/util/getPostData')
 const resolveCookie = require('./src/util/cookies')
-const {GenNonDuplicateID} = require('./src/util/index')
+const {
+    GenNonDuplicateID, 
+    assertWriteFunc
+} = require('./src/util/index')
 const responseConf = require('./src/config/response')
-const { redis_get, redis_set, redis_del } = require('./src/db/redis')
+const { redis_get, redis_set } = require('./src/db/redis')
 /**
  * 
  * @param {*请求对象} req 
@@ -16,6 +19,9 @@ const { redis_get, redis_set, redis_del } = require('./src/db/redis')
 
 const createServerHandler = async (req, res) => {
     res.setHeader('Content-Type', 'application/json')
+
+    // 记录日志
+    // assertWriteFunc(`method=${req.method} ----- url=${req.url} ----- user-agent=${req.headers['user-agent']} ----- time=${Date.now()}; \r\r`)
 
     // 解析query
     req.query = qs.parse(req.url.split('?')[1])
