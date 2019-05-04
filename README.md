@@ -24,5 +24,17 @@
 
 具体代码在 `src/app.js`
 
-### ...
+### 日志拆分
+```shell
+    #!/bin/sh
+    cd /Users/wmmqy/my-file/some-vue-demo/Node.js开发博客项目/node-server/log
+    cp access.log $(date +%Y-%m-%d).access.log
+    echo "" > access.log
+``` 
+
+### 定时执行 crontab 
+```
+crontab -e
+* 0 * * * sh /shell脚本的路径
+```
 
