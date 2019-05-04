@@ -2,6 +2,7 @@ const API = '/api/user'
 const { loginIn } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 const responseConf = require('../config/response')
+const { redis_set } = require('../db/redis')
 
 const UserRouterHandler = async (req, res) => {
     const { method, path } = req
@@ -20,6 +21,7 @@ const UserRouterHandler = async (req, res) => {
             const {data=null, message} = userData
             req.session.username = data.username
             req.session.realname = data.realname
+            redis_set(req.sessionId, req.session)
             return new SuccessModel(data, message)
         } else {
             return new ErrorModel(userData.message)

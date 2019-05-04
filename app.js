@@ -13,7 +13,6 @@ const { redis_get, redis_set, redis_del } = require('./src/db/redis')
  * @param {*响应对象} res
  * 主要用于开启一个服务,做一些相关配置 
  */
-const SESSION_DATA = {}
 
 const createServerHandler = async (req, res) => {
     res.setHeader('Content-Type', 'application/json')
@@ -29,18 +28,24 @@ const createServerHandler = async (req, res) => {
      * 解析session, 让客户端的 token对应 server中 session的数据
      * 避免信息泄漏
      */
+
     let isSetCookie = false
     let token = req.cookie.token || ''
-    if (token) {
-        if (!SESSION_DATA[token]) {
-            SESSION_DATA[token] = {}
-        }
-    } else {
+    // token 不存在
+    if (!token) {
         isSetCookie = true
-        token = GenNonDuplicateID(20)
-        SESSION_DATA[token] = {}
+        token = GenNonDuplicateID(30)
+        redis_set(token, {})
     }
-    req.session = SESSION_DATA[token]
+    req.sessionId = token
+
+    // 从 redis获取 session数据
+    const sessionData = await redis_get(req.sessionId)
+    if (sessionData === null) {
+        req.session = {}
+    } else {
+        req.session = sessionData
+    }
 
     // 解析 post data的数据
     const postData = await getPostData(req)
